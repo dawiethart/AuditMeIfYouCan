@@ -1,0 +1,46 @@
+{
+  "os":  "Linux-5.15.0-134-generic-x86_64-with-glibc2.35",
+  "python":  "CPython 3.9.23",
+  "startedAt":  "2025-07-15T10:46:15.068323Z",
+  "program":  "/mnt/sda/david/activeAuditing/new_activeAuditing/AcitveAuditing_140725_refactored/main.py",
+  "codePath":  "activeAuditing/new_activeAuditing/AcitveAuditing_140725_refactored/main.py",
+  "codePathLocal":  "main.py",
+  "git":  {
+    "commit":  "3ad470dbb720d7a3f095cd5ca9387ff1c46d6c94"
+  },
+  "email":  "d.hartmann@tu-berlin.de",
+  "root":  "/mnt/sda/david/activeAuditing/new_activeAuditing/AcitveAuditing_140725_refactored",
+  "host":  "icopresence.intern.weizenbaum-institut.de",
+  "executable":  "/home/copresence/miniconda3/envs/ENV/bin/python",
+  "cpu_count":  16,
+  "cpu_count_logical":  32,
+  "gpu":  "NVIDIA RTX A6000",
+  "gpu_count":  2,
+  "disk":  {
+    "/":  {
+      "total":  "982820896768",
+      "used":  "644923326464"
+    }
+  },
+  "memory":  {
+    "total":  "101183963136"
+  },
+  "gpu_nvidia":  [
+    {
+      "name":  "NVIDIA RTX A6000",
+      "memoryTotal":  "51527024640",
+      "cudaCores":  10752,
+      "architecture":  "Ampere",
+      "uuid":  "GPU-54ea19c1-bad4-9d93-9088-d3d7f021d7b4"
+    },
+    {
+      "name":  "NVIDIA GeForce RTX 2080 Ti",
+      "memoryTotal":  "11811160064",
+      "cudaCores":  4352,
+      "architecture":  "Turing",
+      "uuid":  "GPU-61c033cd-b0ae-d609-ad24-95aad4985dda"
+    }
+  ],
+  "cudaVersion":  "12.6",
+  "writerId":  "wh39a7omaii6ix9ea9q3x28uvmgkgof9"
+}

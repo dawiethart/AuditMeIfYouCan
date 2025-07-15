@@ -1,0 +1,31 @@
+Some weights of BertForSequenceClassification were not initialized from the model checkpoint at bert-base-uncased and are newly initialized: ['classifier.bias', 'classifier.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+[INFO] Group mapping used: {'black': 0, 'white': 1}
+Parameter 'function'=<function df_map.<locals>.<lambda> at 0x7fd76984e340> of the transform datasets.arrow_dataset.Dataset._map_single couldn't be hashed properly, a random hash was used instead. Make sure your transforms and parameters are serializable with pickle or dill for the dataset fingerprinting and caching to work. If you reuse this transform, the caching mechanism will consider it to be different from the previous calls and recompute everything. This warning is only showed once. Subsequent hashing failures won't be showed.
+Map: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████| 10000/10000 [00:02<00:00, 4315.27 examples/s]
+[INFO] Group mapping used: {'black': 0, 'white': 1}
+Map: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 100/100 [00:00<00:00, 3383.24 examples/s]
+{'train_runtime': 1.5142, 'train_samples_per_second': 198.123, 'train_steps_per_second': 13.869, 'train_loss': 0.04411973555882772, 'epoch': 3.0}
+
+=== Iteration 1 ===
+Traceback (most recent call last):
+  File "/mnt/sda/david/activeAuditing/new_activeAuditing/AcitveAuditing_140725_refactored/main.py", line 55, in <module>
+    main()
+  File "/mnt/sda/david/activeAuditing/new_activeAuditing/AcitveAuditing_140725_refactored/main.py", line 51, in main
+    runner.run()
+  File "/mnt/sda/david/activeAuditing/new_activeAuditing/AcitveAuditing_140725_refactored/audit_run.py", line 142, in run
+    T = self.refine_until_converged(surrogate, tokenizer, base_model, inputs_D, df_D_mapped, S)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/sda/david/activeAuditing/new_activeAuditing/AcitveAuditing_140725_refactored/audit_run.py", line 60, in refine_until_converged
+    self.D["surrogate_score"] = surrogate_preds
+    ~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "/home/copresence/miniconda3/envs/NLP/lib/python3.12/site-packages/pandas/core/frame.py", line 4299, in __setitem__
+    self._set_item(key, value)
+  File "/home/copresence/miniconda3/envs/NLP/lib/python3.12/site-packages/pandas/core/frame.py", line 4512, in _set_item
+    value, refs = self._sanitize_column(value)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/copresence/miniconda3/envs/NLP/lib/python3.12/site-packages/pandas/core/frame.py", line 5253, in _sanitize_column
+    com.require_length_match(value, self.index)
+  File "/home/copresence/miniconda3/envs/NLP/lib/python3.12/site-packages/pandas/core/common.py", line 573, in require_length_match
+    raise ValueError(
+ValueError: Length of values (100) does not match length of index (10000)

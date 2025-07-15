@@ -1,0 +1,49 @@
+Some weights of BertForSequenceClassification were not initialized from the model checkpoint at bert-base-uncased and are newly initialized: ['classifier.bias', 'classifier.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+[INFO] Group mapping used: {'black': 0, 'white': 1}
+Parameter 'function'=<function df_map.<locals>.<lambda> at 0x7fc256835da0> of the transform datasets.arrow_dataset.Dataset._map_single couldn't be hashed properly, a random hash was used instead. Make sure your transforms and parameters are serializable with pickle or dill for the dataset fingerprinting and caching to work. If you reuse this transform, the caching mechanism will consider it to be different from the previous calls and recompute everything. This warning is only showed once. Subsequent hashing failures won't be showed.
+Map: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████| 10000/10000 [00:02<00:00, 4324.65 examples/s]
+[INFO] Group mapping used: {'black': 0, 'white': 1}
+Map: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 100/100 [00:00<00:00, 3488.74 examples/s]
+{'train_runtime': 1.4502, 'train_samples_per_second': 206.868, 'train_steps_per_second': 14.481, 'train_loss': 0.062307465644109813, 'epoch': 3.0}
+
+=== Iteration 1 ===
+[INFO] Group mapping used: {'black': 0, 'white': 1}
+Map: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 100/100 [00:00<00:00, 4045.35 examples/s]
+Dataset({
+    features: ['id', 'text', 'group', 'true_label', 'weights', 'labels', 'input_ids', 'token_type_ids', 'attention_mask'],
+    num_rows: 100
+})
+Casting the dataset: 100%|███████████████████████████████████████████████████████████████████████████████████████████| 10000/10000 [00:00<00:00, 405184.13 examples/s]
+/mnt/sda/david/activeAuditing/new_activeAuditing/AcitveAuditing_140725_refactored/optimization.py:131: UserWarning: Using a target size (torch.Size([10000])) that is different to the input size (torch.Size([100])). This will likely lead to incorrect results due to broadcasting. Please ensure they have the same size.
+  constraint_val = torch.nn.functional.mse_loss(
+Traceback (most recent call last):
+  File "/mnt/sda/david/activeAuditing/new_activeAuditing/AcitveAuditing_140725_refactored/main.py", line 55, in <module>
+    main()
+  File "/mnt/sda/david/activeAuditing/new_activeAuditing/AcitveAuditing_140725_refactored/main.py", line 51, in main
+    runner.run()
+  File "/mnt/sda/david/activeAuditing/new_activeAuditing/AcitveAuditing_140725_refactored/audit_run.py", line 142, in run
+    T = self.refine_until_converged(surrogate, tokenizer, base_model, inputs_D, df_D_mapped, S)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/sda/david/activeAuditing/new_activeAuditing/AcitveAuditing_140725_refactored/audit_run.py", line 68, in refine_until_converged
+    delta1, eval_h1 = eval_h(
+                      ^^^^^^^
+  File "/mnt/sda/david/activeAuditing/new_activeAuditing/AcitveAuditing_140725_refactored/optimization.py", line 27, in eval_h
+    h = train_cerm_pairwise(
+        ^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/sda/david/activeAuditing/new_activeAuditing/AcitveAuditing_140725_refactored/optimization.py", line 193, in train_cerm_pairwise
+    rollout = optimizer.roll(
+              ^^^^^^^^^^^^^^^
+  File "/home/copresence/miniconda3/envs/NLP/lib/python3.12/site-packages/cooper/optim/constrained_optimizers/simultaneous_optimizer.py", line 58, in roll
+    cmp_state = self.cmp.compute_cmp_state(**compute_cmp_state_kwargs)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/sda/david/activeAuditing/new_activeAuditing/AcitveAuditing_140725_refactored/optimization.py", line 131, in compute_cmp_state
+    constraint_val = torch.nn.functional.mse_loss(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/copresence/miniconda3/envs/NLP/lib/python3.12/site-packages/torch/nn/functional.py", line 3791, in mse_loss
+    expanded_input, expanded_target = torch.broadcast_tensors(input, target)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/copresence/miniconda3/envs/NLP/lib/python3.12/site-packages/torch/functional.py", line 76, in broadcast_tensors
+    return _VF.broadcast_tensors(tensors)  # type: ignore[attr-defined]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: The size of tensor a (100) must match the size of tensor b (10000) at non-singleton dimension 0

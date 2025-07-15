@@ -1,0 +1,214 @@
+Some weights of BertForSequenceClassification were not initialized from the model checkpoint at bert-base-uncased and are newly initialized: ['classifier.bias', 'classifier.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+[INFO] Group mapping used: {'black': 0, 'white': 1}
+Parameter 'function'=<function df_map.<locals>.<lambda> at 0x7fd992f52200> of the transform datasets.arrow_dataset.Dataset._map_single couldn't be hashed properly, a random hash was used instead. Make sure your transforms and parameters are serializable with pickle or dill for the dataset fingerprinting and caching to work. If you reuse this transform, the caching mechanism will consider it to be different from the previous calls and recompute everything. This warning is only showed once. Subsequent hashing failures won't be showed.
+Map: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████| 10000/10000 [00:02<00:00, 4313.64 examples/s]
+[INFO] Group mapping used: {'black': 0, 'white': 1}
+Map: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 100/100 [00:00<00:00, 3314.97 examples/s]
+{'train_runtime': 0.8732, 'train_samples_per_second': 343.581, 'train_steps_per_second': 6.872, 'train_loss': 0.05890399217605591, 'epoch': 3.0}
+
+=== Iteration 1 ===
+[INFO] Group mapping used: {'black': 0, 'white': 1}
+Map: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 100/100 [00:00<00:00, 3117.56 examples/s]
+Casting the dataset: 100%|███████████████████████████████████████████████████████████████████████████████████████████| 10000/10000 [00:00<00:00, 433892.02 examples/s]
+Lambda: 0.0000, Violation: -0.4992
+[Epoch 1, Batch 1/157] Loss: -0.0382, Violation: -0.4992
+Lambda: 0.0000, Violation: -0.4991
+[Epoch 1, Batch 3/157] Loss: nan, Violation: -0.4991
+Lambda: 0.0000, Violation: -0.4991
+[Epoch 1, Batch 5/157] Loss: -0.0137, Violation: -0.4991
+Lambda: 0.0000, Violation: -0.4992
+[Epoch 1, Batch 7/157] Loss: -0.0102, Violation: -0.4992
+Lambda: 0.0000, Violation: -0.4991
+[Epoch 1, Batch 9/157] Loss: -0.0459, Violation: -0.4991
+Lambda: 0.0000, Violation: -0.4991
+[Epoch 1, Batch 11/157] Loss: -0.0252, Violation: -0.4991
+Lambda: 0.0000, Violation: -0.4992
+[Epoch 1, Batch 13/157] Loss: -0.0233, Violation: -0.4992
+Lambda: 0.0000, Violation: -0.4993
+[Epoch 1, Batch 15/157] Loss: -0.0140, Violation: -0.4993
+Lambda: 0.0000, Violation: -0.4990
+[Epoch 1, Batch 17/157] Loss: -0.0034, Violation: -0.4990
+Lambda: 0.0000, Violation: -0.4992
+[Epoch 1, Batch 19/157] Loss: -0.0691, Violation: -0.4992
+Lambda: 0.0000, Violation: -0.4993
+[Epoch 1, Batch 21/157] Loss: -0.0046, Violation: -0.4993
+Lambda: 0.0000, Violation: -0.4991
+[Epoch 1, Batch 23/157] Loss: -0.0096, Violation: -0.4991
+Lambda: 0.0000, Violation: -0.4992
+[Epoch 1, Batch 25/157] Loss: -0.0102, Violation: -0.4992
+Lambda: 0.0000, Violation: -0.4991
+[Epoch 1, Batch 27/157] Loss: -0.0173, Violation: -0.4991
+Lambda: 0.0000, Violation: -0.4990
+[Epoch 1, Batch 29/157] Loss: -0.0540, Violation: -0.4990
+Lambda: 0.0000, Violation: -0.4990
+[Epoch 1, Batch 31/157] Loss: -0.0390, Violation: -0.4990
+Lambda: 0.0000, Violation: -0.4991
+[Epoch 1, Batch 33/157] Loss: -0.0303, Violation: -0.4991
+Lambda: 0.0000, Violation: -0.4990
+[Epoch 1, Batch 35/157] Loss: -0.0040, Violation: -0.4990
+Lambda: 0.0000, Violation: -0.4990
+[Epoch 1, Batch 37/157] Loss: -0.0127, Violation: -0.4990
+Lambda: 0.0000, Violation: -0.4989
+[Epoch 1, Batch 39/157] Loss: -0.0029, Violation: -0.4989
+Lambda: 0.0000, Violation: -0.4990
+[Epoch 1, Batch 41/157] Loss: -0.0000, Violation: -0.4990
+Lambda: 0.0000, Violation: -0.4990
+[Epoch 1, Batch 43/157] Loss: -0.0148, Violation: -0.4990
+Lambda: 0.0000, Violation: -0.4991
+[Epoch 1, Batch 45/157] Loss: -0.0059, Violation: -0.4991
+Lambda: 0.0000, Violation: -0.4992
+[Epoch 1, Batch 47/157] Loss: -0.0170, Violation: -0.4992
+Lambda: 0.0000, Violation: -0.4989
+[Epoch 1, Batch 49/157] Loss: -0.0309, Violation: -0.4989
+Lambda: 0.0000, Violation: -0.4990
+[Epoch 1, Batch 51/157] Loss: -0.0041, Violation: -0.4990
+Lambda: 0.0000, Violation: -0.4992
+[Epoch 1, Batch 53/157] Loss: -0.0316, Violation: -0.4992
+Lambda: 0.0000, Violation: -0.4991
+[Epoch 1, Batch 55/157] Loss: nan, Violation: -0.4991
+Lambda: 0.0000, Violation: -0.4991
+[Epoch 1, Batch 57/157] Loss: -0.0153, Violation: -0.4991
+Lambda: 0.0000, Violation: -0.4989
+[Epoch 1, Batch 59/157] Loss: -0.0293, Violation: -0.4989
+Lambda: 0.0000, Violation: -0.4993
+[Epoch 1, Batch 61/157] Loss: -0.0126, Violation: -0.4993
+Lambda: 0.0000, Violation: -0.4988
+[Epoch 1, Batch 63/157] Loss: -0.0535, Violation: -0.4988
+Lambda: 0.0000, Violation: -0.4993
+[Epoch 1, Batch 65/157] Loss: -0.0013, Violation: -0.4993
+Lambda: 0.0000, Violation: -0.4991
+[Epoch 1, Batch 67/157] Loss: -0.0215, Violation: -0.4991
+Lambda: 0.0000, Violation: -0.4989
+[Epoch 1, Batch 69/157] Loss: -0.0128, Violation: -0.4989
+Lambda: 0.0000, Violation: -0.4990
+[Epoch 1, Batch 71/157] Loss: -0.0078, Violation: -0.4990
+Lambda: 0.0000, Violation: -0.4991
+[Epoch 1, Batch 73/157] Loss: -0.0687, Violation: -0.4991
+Lambda: 0.0000, Violation: -0.4992
+[Epoch 1, Batch 75/157] Loss: -0.0810, Violation: -0.4992
+Lambda: 0.0000, Violation: -0.4992
+[Epoch 1, Batch 77/157] Loss: -0.0089, Violation: -0.4992
+Lambda: 0.0000, Violation: -0.4992
+[Epoch 1, Batch 79/157] Loss: -0.0134, Violation: -0.4992
+Lambda: 0.0000, Violation: -0.4991
+[Epoch 1, Batch 81/157] Loss: -0.0120, Violation: -0.4991
+Lambda: 0.0000, Violation: -0.4992
+[Epoch 1, Batch 83/157] Loss: -0.0292, Violation: -0.4992
+Lambda: 0.0000, Violation: -0.4989
+[Epoch 1, Batch 85/157] Loss: -0.0056, Violation: -0.4989
+Lambda: 0.0000, Violation: -0.4991
+[Epoch 1, Batch 87/157] Loss: -0.0034, Violation: -0.4991
+Lambda: 0.0000, Violation: -0.4991
+[Epoch 1, Batch 89/157] Loss: -0.0063, Violation: -0.4991
+Lambda: 0.0000, Violation: -0.4988
+[Epoch 1, Batch 91/157] Loss: -0.0019, Violation: -0.4988
+Lambda: 0.0000, Violation: -0.4990
+[Epoch 1, Batch 93/157] Loss: -0.0026, Violation: -0.4990
+Lambda: 0.0000, Violation: -0.4991
+[Epoch 1, Batch 95/157] Loss: -0.0300, Violation: -0.4991
+Lambda: 0.0000, Violation: -0.4992
+[Epoch 1, Batch 97/157] Loss: -0.0352, Violation: -0.4992
+Lambda: 0.0000, Violation: -0.4992
+[Epoch 1, Batch 99/157] Loss: -0.0036, Violation: -0.4992
+Lambda: 0.0000, Violation: -0.4990
+[Epoch 1, Batch 101/157] Loss: -0.0507, Violation: -0.4990
+Lambda: 0.0000, Violation: -0.4992
+[Epoch 1, Batch 103/157] Loss: -0.0215, Violation: -0.4992
+Lambda: 0.0000, Violation: -0.4990
+[Epoch 1, Batch 105/157] Loss: -0.0596, Violation: -0.4990
+Lambda: 0.0000, Violation: -0.4990
+[Epoch 1, Batch 107/157] Loss: -0.0347, Violation: -0.4990
+Lambda: 0.0000, Violation: -0.4988
+[Epoch 1, Batch 109/157] Loss: -0.0505, Violation: -0.4988
+Lambda: 0.0000, Violation: -0.4990
+[Epoch 1, Batch 111/157] Loss: -0.0386, Violation: -0.4990
+Lambda: 0.0000, Violation: -0.4988
+[Epoch 1, Batch 113/157] Loss: -0.0242, Violation: -0.4988
+Lambda: 0.0000, Violation: -0.4989
+[Epoch 1, Batch 115/157] Loss: -0.0258, Violation: -0.4989
+Lambda: 0.0000, Violation: -0.4990
+[Epoch 1, Batch 117/157] Loss: -0.0391, Violation: -0.4990
+Lambda: 0.0000, Violation: -0.4986
+[Epoch 1, Batch 119/157] Loss: -0.0125, Violation: -0.4986
+Lambda: 0.0000, Violation: -0.4985
+[Epoch 1, Batch 121/157] Loss: -0.0175, Violation: -0.4985
+Lambda: 0.0000, Violation: -0.4991
+[Epoch 1, Batch 123/157] Loss: -0.0259, Violation: -0.4991
+Lambda: 0.0000, Violation: -0.4987
+[Epoch 1, Batch 125/157] Loss: -0.0040, Violation: -0.4987
+Lambda: 0.0000, Violation: -0.4991
+[Epoch 1, Batch 127/157] Loss: -0.0165, Violation: -0.4991
+Lambda: 0.0000, Violation: -0.4990
+[Epoch 1, Batch 129/157] Loss: -0.0204, Violation: -0.4990
+Lambda: 0.0000, Violation: -0.4988
+[Epoch 1, Batch 131/157] Loss: -0.0038, Violation: -0.4988
+Lambda: 0.0000, Violation: -0.4983
+[Epoch 1, Batch 133/157] Loss: -0.0107, Violation: -0.4983
+Lambda: 0.0000, Violation: -0.4991
+[Epoch 1, Batch 135/157] Loss: -0.0056, Violation: -0.4991
+Lambda: 0.0000, Violation: -0.4988
+[Epoch 1, Batch 137/157] Loss: -0.0629, Violation: -0.4988
+Lambda: 0.0000, Violation: -0.4985
+[Epoch 1, Batch 139/157] Loss: -0.0250, Violation: -0.4985
+Lambda: 0.0000, Violation: -0.4986
+[Epoch 1, Batch 141/157] Loss: -0.0071, Violation: -0.4986
+Lambda: 0.0000, Violation: -0.4985
+[Epoch 1, Batch 143/157] Loss: -0.0128, Violation: -0.4985
+Lambda: 0.0000, Violation: -0.4986
+[Epoch 1, Batch 145/157] Loss: -0.0130, Violation: -0.4986
+Lambda: 0.0000, Violation: -0.4983
+[Epoch 1, Batch 147/157] Loss: -0.0204, Violation: -0.4983
+Lambda: 0.0000, Violation: -0.4984
+[Epoch 1, Batch 149/157] Loss: -0.0071, Violation: -0.4984
+Lambda: 0.0000, Violation: -0.4984
+[Epoch 1, Batch 151/157] Loss: -0.0229, Violation: -0.4984
+Lambda: 0.0000, Violation: -0.4984
+[Epoch 1, Batch 153/157] Loss: -0.0469, Violation: -0.4984
+Lambda: 0.0000, Violation: -0.4978
+[Epoch 1, Batch 155/157] Loss: -0.0059, Violation: -0.4978
+Lambda: 0.0000, Violation: -0.4985
+[Epoch 1, Batch 157/157] Loss: nan, Violation: -0.4985
+Lambda: 0.0000, Violation: -0.4988
+[Epoch 2, Batch 1/157] Loss: -0.0276, Violation: -0.4988
+Lambda: 0.0000, Violation: -0.4985
+[Epoch 2, Batch 3/157] Loss: -0.0420, Violation: -0.4985
+Lambda: 0.0000, Violation: -0.4979
+[Epoch 2, Batch 5/157] Loss: -0.0113, Violation: -0.4979
+Lambda: 0.0000, Violation: -0.4976
+[Epoch 2, Batch 7/157] Loss: -0.0117, Violation: -0.4976
+Lambda: 0.0000, Violation: -0.4979
+[Epoch 2, Batch 9/157] Loss: -0.0040, Violation: -0.4979
+Lambda: 0.0000, Violation: -0.4984
+[Epoch 2, Batch 11/157] Loss: -0.0195, Violation: -0.4984
+Lambda: 0.0000, Violation: -0.4981
+[Epoch 2, Batch 13/157] Loss: -0.0092, Violation: -0.4981
+Traceback (most recent call last):
+  File "/mnt/sda/david/activeAuditing/new_activeAuditing/AcitveAuditing_140725_refactored/main.py", line 55, in <module>
+    main()
+  File "/mnt/sda/david/activeAuditing/new_activeAuditing/AcitveAuditing_140725_refactored/main.py", line 51, in main
+    runner.run()
+  File "/mnt/sda/david/activeAuditing/new_activeAuditing/AcitveAuditing_140725_refactored/audit_run.py", line 142, in run
+    T = self.refine_until_converged(surrogate, tokenizer, base_model, inputs_D, df_D_mapped, S)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/sda/david/activeAuditing/new_activeAuditing/AcitveAuditing_140725_refactored/audit_run.py", line 68, in refine_until_converged
+    delta1, eval_h1 = eval_h(
+                      ^^^^^^^
+  File "/mnt/sda/david/activeAuditing/new_activeAuditing/AcitveAuditing_140725_refactored/optimization.py", line 27, in eval_h
+    h = train_cerm_pairwise(
+        ^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/sda/david/activeAuditing/new_activeAuditing/AcitveAuditing_140725_refactored/optimization.py", line 193, in train_cerm_pairwise
+    rollout = optimizer.roll(
+              ^^^^^^^^^^^^^^^
+  File "/home/copresence/miniconda3/envs/NLP/lib/python3.12/site-packages/cooper/optim/constrained_optimizers/simultaneous_optimizer.py", line 68, in roll
+    primal_lagrangian_store.backward()
+  File "/home/copresence/miniconda3/envs/NLP/lib/python3.12/site-packages/cooper/cmp.py", line 40, in backward
+    self.lagrangian.backward()
+  File "/home/copresence/miniconda3/envs/NLP/lib/python3.12/site-packages/torch/_tensor.py", line 581, in backward
+    torch.autograd.backward(
+  File "/home/copresence/miniconda3/envs/NLP/lib/python3.12/site-packages/torch/autograd/__init__.py", line 347, in backward
+    _engine_run_backward(
+  File "/home/copresence/miniconda3/envs/NLP/lib/python3.12/site-packages/torch/autograd/graph.py", line 825, in _engine_run_backward
+    return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyboardInterrupt

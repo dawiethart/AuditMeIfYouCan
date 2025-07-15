@@ -1,0 +1,33 @@
+Some weights of BertForSequenceClassification were not initialized from the model checkpoint at bert-base-uncased and are newly initialized: ['classifier.bias', 'classifier.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+[INFO] Group mapping used: {'black': 0, 'white': 1}
+Parameter 'function'=<function df_map.<locals>.<lambda> at 0x7fc8b7b54860> of the transform datasets.arrow_dataset.Dataset._map_single couldn't be hashed properly, a random hash was used instead. Make sure your transforms and parameters are serializable with pickle or dill for the dataset fingerprinting and caching to work. If you reuse this transform, the caching mechanism will consider it to be different from the previous calls and recompute everything. This warning is only showed once. Subsequent hashing failures won't be showed.
+Map: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 10000/10000 [00:00<00:00, 12716.14 examples/s]
+[INFO] Group mapping used: {'black': 0, 'white': 1}
+Map: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 100/100 [00:00<00:00, 6142.44 examples/s]
+/home/copresence/miniconda3/envs/NLP/lib/python3.12/site-packages/torch/nn/parallel/data_parallel.py:37: UserWarning:
+    There is an imbalance between your GPUs. You may want to exclude GPU 1 which
+    has less than 75% of the memory or cores of GPU 0. You can do so by setting
+    the device_ids argument to DataParallel, or by setting the CUDA_VISIBLE_DEVICES
+    environment variable.
+  warnings.warn(
+Traceback (most recent call last):
+  File "/mnt/sda/david/activeAuditing/new_activeAuditing/AcitveAuditing_140725_refactored/main.py", line 53, in <module>
+    main()
+  File "/mnt/sda/david/activeAuditing/new_activeAuditing/AcitveAuditing_140725_refactored/main.py", line 49, in main
+    runner.run()
+  File "/mnt/sda/david/activeAuditing/new_activeAuditing/AcitveAuditing_140725_refactored/audit_run.py", line 70, in run
+    surrogate = self.train_surrogate(
+                ^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/sda/david/activeAuditing/new_activeAuditing/AcitveAuditing_140725_refactored/surrogate_model.py", line 69, in train_surrogate
+    trainer.train()
+  File "/home/copresence/miniconda3/envs/NLP/lib/python3.12/site-packages/transformers/trainer.py", line 2123, in train
+    return inner_training_loop(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/copresence/miniconda3/envs/NLP/lib/python3.12/site-packages/transformers/trainer.py", line 2481, in _inner_training_loop
+    tr_loss_step = self.training_step(model, inputs, num_items_in_batch)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/copresence/miniconda3/envs/NLP/lib/python3.12/site-packages/transformers/trainer.py", line 3579, in training_step
+    loss = self.compute_loss(model, inputs, num_items_in_batch=num_items_in_batch)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: train_surrogate.<locals>.CustomTrainer.compute_loss() got an unexpected keyword argument 'num_items_in_batch'

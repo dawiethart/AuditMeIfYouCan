@@ -1,0 +1,64 @@
+Some weights of BertForSequenceClassification were not initialized from the model checkpoint at bert-base-uncased and are newly initialized: ['classifier.bias', 'classifier.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+[INFO] Group mapping used: {'black': 0, 'white': 1}
+Map: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 10000/10000 [00:02<00:00, 4094.35 examples/s]
+[INFO] Group mapping used: {'black': 0, 'white': 1}
+Map: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 100/100 [00:00<00:00, 3684.77 examples/s]
+No label_names provided for model class `PeftModelForSequenceClassification`. Since `PeftModel` hides base models input arguments, if label_names is not given, label_names can't be set automatically within `Trainer`. Note that empty label_names list will be used instead.
+{'train_runtime': 1.5345, 'train_samples_per_second': 195.509, 'train_steps_per_second': 13.686, 'train_loss': 0.04592745928537278, 'epoch': 3.0}
+
+=== Iteration 1 ===
+Traceback (most recent call last):
+  File "/home/copresence/miniconda3/envs/ENV/lib/python3.9/site-packages/pandas/core/indexes/base.py", line 3812, in get_loc
+    return self._engine.get_loc(casted_key)
+  File "pandas/_libs/index.pyx", line 167, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 196, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7088, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7096, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'bb_score'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/mnt/sda/david/activeAuditing/new_activeAuditing/AcitveAuditing_140725_refactored/main.py", line 55, in <module>
+    main()
+  File "/mnt/sda/david/activeAuditing/new_activeAuditing/AcitveAuditing_140725_refactored/main.py", line 51, in main
+    runner.run()
+  File "/mnt/sda/david/activeAuditing/new_activeAuditing/AcitveAuditing_140725_refactored/audit_run.py", line 147, in run
+    T, surrogate = self.refine_until_converged(
+  File "/mnt/sda/david/activeAuditing/new_activeAuditing/AcitveAuditing_140725_refactored/audit_run.py", line 66, in refine_until_converged
+    df_T, df_T_mapped = df_map(T, tokenizer, True)
+  File "/mnt/sda/david/activeAuditing/new_activeAuditing/AcitveAuditing_140725_refactored/utils.py", line 12, in df_map
+    df["labels"] = df["bb_score"] if surrogate else df["true_label"]
+  File "/home/copresence/miniconda3/envs/ENV/lib/python3.9/site-packages/pandas/core/frame.py", line 4107, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "/home/copresence/miniconda3/envs/ENV/lib/python3.9/site-packages/pandas/core/indexes/base.py", line 3819, in get_loc
+    raise KeyError(key) from err
+KeyError: 'bb_score'
+Traceback (most recent call last):
+  File "/home/copresence/miniconda3/envs/ENV/lib/python3.9/site-packages/pandas/core/indexes/base.py", line 3812, in get_loc
+    return self._engine.get_loc(casted_key)
+  File "pandas/_libs/index.pyx", line 167, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 196, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7088, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7096, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'bb_score'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/mnt/sda/david/activeAuditing/new_activeAuditing/AcitveAuditing_140725_refactored/main.py", line 55, in <module>
+    main()
+  File "/mnt/sda/david/activeAuditing/new_activeAuditing/AcitveAuditing_140725_refactored/main.py", line 51, in main
+    runner.run()
+  File "/mnt/sda/david/activeAuditing/new_activeAuditing/AcitveAuditing_140725_refactored/audit_run.py", line 147, in run
+    T, surrogate = self.refine_until_converged(
+  File "/mnt/sda/david/activeAuditing/new_activeAuditing/AcitveAuditing_140725_refactored/audit_run.py", line 66, in refine_until_converged
+    df_T, df_T_mapped = df_map(T, tokenizer, True)
+  File "/mnt/sda/david/activeAuditing/new_activeAuditing/AcitveAuditing_140725_refactored/utils.py", line 12, in df_map
+    df["labels"] = df["bb_score"] if surrogate else df["true_label"]
+  File "/home/copresence/miniconda3/envs/ENV/lib/python3.9/site-packages/pandas/core/frame.py", line 4107, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "/home/copresence/miniconda3/envs/ENV/lib/python3.9/site-packages/pandas/core/indexes/base.py", line 3819, in get_loc
+    raise KeyError(key) from err
+KeyError: 'bb_score'

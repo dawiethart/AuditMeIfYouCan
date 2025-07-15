@@ -1,0 +1,130 @@
+Some weights of BertForSequenceClassification were not initialized from the model checkpoint at bert-base-uncased and are newly initialized: ['classifier.bias', 'classifier.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+[INFO] Group mapping used: {'black': 0, 'white': 1}
+Parameter 'function'=<function df_map.<locals>.<lambda> at 0x7f1b6c3d9c60> of the transform datasets.arrow_dataset.Dataset._map_single couldn't be hashed properly, a random hash was used instead. Make sure your transforms and parameters are serializable with pickle or dill for the dataset fingerprinting and caching to work. If you reuse this transform, the caching mechanism will consider it to be different from the previous calls and recompute everything. This warning is only showed once. Subsequent hashing failures won't be showed.
+Map: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████| 10000/10000 [00:02<00:00, 4277.49 examples/s]
+[INFO] Group mapping used: {0: 0, 1: 1}
+Map: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 100/100 [00:00<00:00, 3541.65 examples/s]
+{'train_runtime': 0.8644, 'train_samples_per_second': 347.073, 'train_steps_per_second': 6.941, 'train_loss': 0.0954144299030304, 'epoch': 3.0}
+
+=== Iteration 1 ===
+[INFO] Group mapping used: {0: 0, 1: 1}
+Map: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 100/100 [00:00<00:00, 3280.57 examples/s]
+Casting the dataset: 100%|███████████████████████████████████████████████████████████████████████████████████████████| 10000/10000 [00:00<00:00, 367511.98 examples/s]
+Lambda: 0.0000, Violation: -0.4986
+[Epoch 1, Batch 1/157] Loss: -0.0614, Violation: -0.4986
+Lambda: 0.0000, Violation: -0.4977
+[Epoch 1, Batch 157/157] Loss: nan, Violation: -0.4977
+Lambda: 0.0000, Violation: -0.4977
+[Epoch 2, Batch 1/157] Loss: -0.0536, Violation: -0.4977
+Traceback (most recent call last):
+  File "/mnt/sda/david/activeAuditing/new_activeAuditing/AcitveAuditing_140725_refactored/main.py", line 55, in <module>
+    main()
+  File "/mnt/sda/david/activeAuditing/new_activeAuditing/AcitveAuditing_140725_refactored/main.py", line 51, in main
+    runner.run()
+  File "/mnt/sda/david/activeAuditing/new_activeAuditing/AcitveAuditing_140725_refactored/audit_run.py", line 142, in run
+    T = self.refine_until_converged(surrogate, tokenizer, base_model, inputs_D, df_D_mapped, S)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/sda/david/activeAuditing/new_activeAuditing/AcitveAuditing_140725_refactored/audit_run.py", line 68, in refine_until_converged
+    delta1, eval_h1 = eval_h(
+                      ^^^^^^^
+  File "/mnt/sda/david/activeAuditing/new_activeAuditing/AcitveAuditing_140725_refactored/optimization.py", line 27, in eval_h
+    h = train_cerm_pairwise(
+        ^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/sda/david/activeAuditing/new_activeAuditing/AcitveAuditing_140725_refactored/optimization.py", line 193, in train_cerm_pairwise
+    rollout = optimizer.roll(
+              ^^^^^^^^^^^^^^^
+  File "/home/copresence/miniconda3/envs/NLP/lib/python3.12/site-packages/cooper/optim/constrained_optimizers/simultaneous_optimizer.py", line 58, in roll
+    cmp_state = self.cmp.compute_cmp_state(**compute_cmp_state_kwargs)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/sda/david/activeAuditing/new_activeAuditing/AcitveAuditing_140725_refactored/optimization.py", line 125, in compute_cmp_state
+    logits_T = model(
+               ^^^^^^
+  File "/home/copresence/miniconda3/envs/NLP/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/copresence/miniconda3/envs/NLP/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/copresence/miniconda3/envs/NLP/lib/python3.12/site-packages/accelerate/utils/operations.py", line 820, in forward
+    return model_forward(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/copresence/miniconda3/envs/NLP/lib/python3.12/site-packages/accelerate/utils/operations.py", line 808, in __call__
+    return convert_to_fp32(self.model_forward(*args, **kwargs))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/copresence/miniconda3/envs/NLP/lib/python3.12/site-packages/torch/amp/autocast_mode.py", line 44, in decorate_autocast
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/copresence/miniconda3/envs/NLP/lib/python3.12/site-packages/peft/peft_model.py", line 1558, in forward
+    return self.base_model(
+           ^^^^^^^^^^^^^^^^
+  File "/home/copresence/miniconda3/envs/NLP/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/copresence/miniconda3/envs/NLP/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/copresence/miniconda3/envs/NLP/lib/python3.12/site-packages/peft/tuners/tuners_utils.py", line 193, in forward
+    return self.model.forward(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/copresence/miniconda3/envs/NLP/lib/python3.12/site-packages/transformers/models/bert/modeling_bert.py", line 1668, in forward
+    outputs = self.bert(
+              ^^^^^^^^^^
+  File "/home/copresence/miniconda3/envs/NLP/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/copresence/miniconda3/envs/NLP/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/copresence/miniconda3/envs/NLP/lib/python3.12/site-packages/transformers/models/bert/modeling_bert.py", line 1142, in forward
+    encoder_outputs = self.encoder(
+                      ^^^^^^^^^^^^^
+  File "/home/copresence/miniconda3/envs/NLP/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/copresence/miniconda3/envs/NLP/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/copresence/miniconda3/envs/NLP/lib/python3.12/site-packages/transformers/models/bert/modeling_bert.py", line 695, in forward
+    layer_outputs = layer_module(
+                    ^^^^^^^^^^^^^
+  File "/home/copresence/miniconda3/envs/NLP/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/copresence/miniconda3/envs/NLP/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/copresence/miniconda3/envs/NLP/lib/python3.12/site-packages/transformers/models/bert/modeling_bert.py", line 585, in forward
+    self_attention_outputs = self.attention(
+                             ^^^^^^^^^^^^^^^
+  File "/home/copresence/miniconda3/envs/NLP/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/copresence/miniconda3/envs/NLP/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/copresence/miniconda3/envs/NLP/lib/python3.12/site-packages/transformers/models/bert/modeling_bert.py", line 524, in forward
+    attention_output = self.output(self_outputs[0], hidden_states)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/copresence/miniconda3/envs/NLP/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/copresence/miniconda3/envs/NLP/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/copresence/miniconda3/envs/NLP/lib/python3.12/site-packages/transformers/models/bert/modeling_bert.py", line 467, in forward
+    hidden_states = self.dropout(hidden_states)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/copresence/miniconda3/envs/NLP/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/copresence/miniconda3/envs/NLP/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/copresence/miniconda3/envs/NLP/lib/python3.12/site-packages/torch/nn/modules/dropout.py", line 70, in forward
+    return F.dropout(input, self.p, self.training, self.inplace)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/copresence/miniconda3/envs/NLP/lib/python3.12/site-packages/torch/nn/functional.py", line 1425, in dropout
+    _VF.dropout_(input, p, training) if inplace else _VF.dropout(input, p, training)
+                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyboardInterrupt

@@ -1,0 +1,92 @@
+_wandb:
+    value:
+        cli_version: 0.21.0
+        e:
+            ths0f8lz3xyzq39aguf0jbl3ttykmd1b:
+                codePath: activeAuditing/new_activeAuditing/AcitveAuditing_140725_refactored/main.py
+                codePathLocal: main.py
+                cpu_count: 16
+                cpu_count_logical: 32
+                cudaVersion: "12.6"
+                disk:
+                    /:
+                        total: "982820896768"
+                        used: "644923445248"
+                email: d.hartmann@tu-berlin.de
+                executable: /home/copresence/miniconda3/envs/NLP/bin/python
+                git:
+                    commit: 3ad470dbb720d7a3f095cd5ca9387ff1c46d6c94
+                gpu: NVIDIA RTX A6000
+                gpu_count: 2
+                gpu_nvidia:
+                    - architecture: Ampere
+                      cudaCores: 10752
+                      memoryTotal: "51527024640"
+                      name: NVIDIA RTX A6000
+                      uuid: GPU-54ea19c1-bad4-9d93-9088-d3d7f021d7b4
+                    - architecture: Turing
+                      cudaCores: 4352
+                      memoryTotal: "11811160064"
+                      name: NVIDIA GeForce RTX 2080 Ti
+                      uuid: GPU-61c033cd-b0ae-d609-ad24-95aad4985dda
+                host: icopresence.intern.weizenbaum-institut.de
+                memory:
+                    total: "101183963136"
+                os: Linux-5.15.0-134-generic-x86_64-with-glibc2.35
+                program: /mnt/sda/david/activeAuditing/new_activeAuditing/AcitveAuditing_140725_refactored/main.py
+                python: CPython 3.12.3
+                root: /mnt/sda/david/activeAuditing/new_activeAuditing/AcitveAuditing_140725_refactored
+                startedAt: "2025-07-15T10:49:31.092815Z"
+                writerId: ths0f8lz3xyzq39aguf0jbl3ttykmd1b
+        m: []
+        python_version: 3.12.3
+        t:
+            "1":
+                - 1
+                - 2
+                - 3
+                - 5
+                - 11
+                - 41
+                - 49
+                - 51
+                - 53
+                - 71
+                - 98
+            "2":
+                - 1
+                - 2
+                - 3
+                - 5
+                - 11
+                - 41
+                - 49
+                - 51
+                - 53
+                - 71
+                - 98
+            "3":
+                - 16
+            "4": 3.12.3
+            "5": 0.21.0
+            "6": 4.46.3
+            "12": 0.21.0
+            "13": linux-x86_64
+batch_size:
+    value: 16
+change:
+    value: test_run
+epochs_opt:
+    value: 3
+epochs_sur:
+    value: 3
+epsilon:
+    value: 0.01
+iterations:
+    value: 5
+lambda_penalty:
+    value: 5
+model:
+    value: lora
+size_T:
+    value: 100

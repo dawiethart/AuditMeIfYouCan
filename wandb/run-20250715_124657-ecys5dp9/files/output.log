@@ -1,0 +1,44 @@
+Some weights of BertForSequenceClassification were not initialized from the model checkpoint at bert-base-uncased and are newly initialized: ['classifier.bias', 'classifier.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+[INFO] Group mapping used: {'black': 0, 'white': 1}
+Parameter 'function'=<function df_map.<locals>.<lambda> at 0x7fafe03e1bc0> of the transform datasets.arrow_dataset.Dataset._map_single couldn't be hashed properly, a random hash was used instead. Make sure your transforms and parameters are serializable with pickle or dill for the dataset fingerprinting and caching to work. If you reuse this transform, the caching mechanism will consider it to be different from the previous calls and recompute everything. This warning is only showed once. Subsequent hashing failures won't be showed.
+Map: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████| 10000/10000 [00:02<00:00, 4260.36 examples/s]
+[INFO] Group mapping used: {'black': 0, 'white': 1}
+Map: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 100/100 [00:00<00:00, 3539.83 examples/s]
+{'train_runtime': 1.4627, 'train_samples_per_second': 205.096, 'train_steps_per_second': 14.357, 'train_loss': 0.059046512558346705, 'epoch': 3.0}
+
+=== Iteration 1 ===
+[INFO] Group mapping used: {}
+Dataset({
+    features: ['id', 'text', 'group', 'true_label', 'weights', 'labels'],
+    num_rows: 0
+})
+Casting the dataset: 100%|███████████████████████████████████████████████████████████████████████████████████████████| 10000/10000 [00:00<00:00, 395193.20 examples/s]
+Traceback (most recent call last):
+  File "/mnt/sda/david/activeAuditing/new_activeAuditing/AcitveAuditing_140725_refactored/main.py", line 55, in <module>
+    main()
+  File "/mnt/sda/david/activeAuditing/new_activeAuditing/AcitveAuditing_140725_refactored/main.py", line 51, in main
+    runner.run()
+  File "/mnt/sda/david/activeAuditing/new_activeAuditing/AcitveAuditing_140725_refactored/audit_run.py", line 142, in run
+    T = self.refine_until_converged(surrogate, tokenizer, base_model, inputs_D, df_D_mapped)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/sda/david/activeAuditing/new_activeAuditing/AcitveAuditing_140725_refactored/audit_run.py", line 68, in refine_until_converged
+    delta1, eval_h1 = eval_h(
+                      ^^^^^^^
+  File "/mnt/sda/david/activeAuditing/new_activeAuditing/AcitveAuditing_140725_refactored/optimization.py", line 27, in eval_h
+    h = train_cerm_pairwise(
+        ^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/sda/david/activeAuditing/new_activeAuditing/AcitveAuditing_140725_refactored/optimization.py", line 170, in train_cerm_pairwise
+    "input_ids": torch.tensor(df_T_mapped["input_ids"]).long(),
+                              ~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/home/copresence/miniconda3/envs/NLP/lib/python3.12/site-packages/datasets/arrow_dataset.py", line 2762, in __getitem__
+    return self._getitem(key)
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/copresence/miniconda3/envs/NLP/lib/python3.12/site-packages/datasets/arrow_dataset.py", line 2746, in _getitem
+    pa_subtable = query_table(self._data, key, indices=self._indices)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/copresence/miniconda3/envs/NLP/lib/python3.12/site-packages/datasets/formatting/formatting.py", line 590, in query_table
+    _check_valid_column_key(key, table.column_names)
+  File "/home/copresence/miniconda3/envs/NLP/lib/python3.12/site-packages/datasets/formatting/formatting.py", line 527, in _check_valid_column_key
+    raise KeyError(f"Column {key} not in the dataset. Current columns in the dataset: {columns}")
+KeyError: "Column input_ids not in the dataset. Current columns in the dataset: ['id', 'text', 'group', 'true_label', 'weights', 'labels']"

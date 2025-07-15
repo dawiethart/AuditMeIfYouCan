@@ -1,0 +1,53 @@
+Some weights of BertForSequenceClassification were not initialized from the model checkpoint at bert-base-uncased and are newly initialized: ['classifier.bias', 'classifier.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+[INFO] Group mapping used: {'black': 0, 'white': 1}
+Map: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████| 10000/10000 [00:02<00:00, 4094.32 examples/s]
+[INFO] Group mapping used: {np.int64(0): 0, np.int64(1): 1}
+Map: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████| 100/100 [00:00<00:00, 3096.96 examples/s]
+No label_names provided for model class `PeftModelForSequenceClassification`. Since `PeftModel` hides base models input arguments, if label_names is not given, label_names can't be set automatically within `Trainer`. Note that empty label_names list will be used instead.
+{'train_runtime': 0.5998, 'train_samples_per_second': 166.711, 'train_steps_per_second': 3.334, 'train_loss': 0.04467219114303589, 'epoch': 1.0}
+
+=== Iteration 1 ===
+[INFO] Group mapping used: {np.int64(0): 0, np.int64(1): 1}
+Map: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████| 100/100 [00:00<00:00, 3398.26 examples/s]
+Casting the dataset: 100%|███████████████████████████████████████████████████████████████████████████████████| 10000/10000 [00:00<00:00, 527061.66 examples/s]
+Lambda: 0.0000, Violation: -0.4991
+[Epoch 1, Batch 1/157] Loss: -0.0374, Violation: -0.4991
+Lambda: 0.0000, Violation: -0.4982
+[Epoch 1, Batch 157/157] Loss: -0.0993, Violation: -0.4982
+Training done for C-ERM
+Start Calculation of AUC on whole D -> might take a while
+Done with calculation whole D
+Casting the dataset: 100%|███████████████████████████████████████████████████████████████████████████████████| 10000/10000 [00:00<00:00, 599708.89 examples/s]
+Lambda: 0.0000, Violation: -0.4985
+[Epoch 1, Batch 1/157] Loss: 0.0265, Violation: -0.4985
+Lambda: 0.0000, Violation: -0.4984
+[Epoch 1, Batch 157/157] Loss: 0.0393, Violation: -0.4984
+Training done for C-ERM
+Start Calculation of AUC on whole D -> might take a while
+Done with calculation whole D
+Stopping: ΔAUC(h1-h2) = 0.0030 within 2ε tolerance
+[INFO] Group mapping used: {np.int64(0): 0, np.int64(1): 1}
+Map: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████| 100/100 [00:00<00:00, 3187.48 examples/s]
+No label_names provided for model class `PeftModelForSequenceClassification`. Since `PeftModel` hides base models input arguments, if label_names is not given, label_names can't be set automatically within `Trainer`. Note that empty label_names list will be used instead.
+{'train_runtime': 0.1777, 'train_samples_per_second': 562.662, 'train_steps_per_second': 11.253, 'train_loss': 0.04452598839998245, 'epoch': 1.0}
+[INFO] Group mapping used: {np.int64(0): 0, np.int64(1): 1}
+Map: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████| 100/100 [00:00<00:00, 3290.35 examples/s]
+No label_names provided for model class `PeftModelForSequenceClassification`. Since `PeftModel` hides base models input arguments, if label_names is not given, label_names can't be set automatically within `Trainer`. Note that empty label_names list will be used instead.
+{'train_runtime': 0.1631, 'train_samples_per_second': 612.994, 'train_steps_per_second': 12.26, 'train_loss': 0.04445808753371239, 'epoch': 1.0}
+Traceback (most recent call last):
+  File "/mnt/sda/david/activeAuditing/new_activeAuditing/AcitveAuditing_140725_refactored/main.py", line 55, in <module>
+    main()
+  File "/mnt/sda/david/activeAuditing/new_activeAuditing/AcitveAuditing_140725_refactored/main.py", line 51, in main
+    runner.run()
+  File "/mnt/sda/david/activeAuditing/new_activeAuditing/AcitveAuditing_140725_refactored/audit_run.py", line 168, in run
+    delta_progress_vals = delta_progress(
+TypeError: delta_progress() missing 1 required positional argument: 'compute_auc_fn'
+Traceback (most recent call last):
+  File "/mnt/sda/david/activeAuditing/new_activeAuditing/AcitveAuditing_140725_refactored/main.py", line 55, in <module>
+    main()
+  File "/mnt/sda/david/activeAuditing/new_activeAuditing/AcitveAuditing_140725_refactored/main.py", line 51, in main
+    runner.run()
+  File "/mnt/sda/david/activeAuditing/new_activeAuditing/AcitveAuditing_140725_refactored/audit_run.py", line 168, in run
+    delta_progress_vals = delta_progress(
+TypeError: delta_progress() missing 1 required positional argument: 'compute_auc_fn'

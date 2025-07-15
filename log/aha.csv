@@ -1,0 +1,9 @@
+Iteration,delta_random,delta_stratified,delta_auc
+
+T Size = 100, Epochs = 1, Batch Size = 20, Lambda = 0.1, epsilon = 0.01
+
+T Size = 100, Epochs = 1, Batch Size = 20, Lambda = 0.1, epsilon = 0.01
+
+T Size = 100, Epochs = 1, Batch Size = 20, Lambda = 0.1, epsilon = 0.01
+
+T Size = 100, Epochs = 1, Batch Size = 20, Lambda = 0.1, epsilon = 0.01
