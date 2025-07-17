@@ -3,6 +3,7 @@ import time
 
 import pandas as pd
 import torch
+import numpy as np
 
 import wandb
 from evaluation import compute_blackbox_auc_difference
@@ -47,23 +48,24 @@ class AuditRunner:
         weights = pd.Series(1.0 / len(self.D), index=self.D.index)
         lambda_param = torch.log(torch.tensor(1e6 * 2 ** 100 / 0.05))  # Example H, M, delta
         thresholds = pd.Series(
-            torch.distributions.Exponential(1 / lambda_param).sample([len(self.D)]).numpy(),
+            torch.distributions.Exponential(lambda_param).sample([len(self.D)]).numpy(),
             index=self.D.index,
         )
+
+        surrogate_preds = self.predict(
+                self.D["text"].tolist(), tokenizer, surrogate, self.config.batch_size
+            )
+        self.D["surrogate_score"] = surrogate_preds
 
         T = S.drop(columns = "bb_score") # first random stratified sample
  
         for i in range(50):  # Max 50 inner iterations to avoid infinite loops
-            surrogate_preds = self.predict(
-                T["text"].tolist(), tokenizer, surrogate, self.config.batch_size
-            )
-            T["surrogate_score"] = surrogate_preds
 
-            constraint_ids = T["id"]
-            constraint_preds = surrogate_preds
-            constraint_dict = dict(zip(constraint_ids, constraint_preds))
+            constraint_ids = T["id"] #Use subset T of surrogate_preds as Constraint
+            constraint_preds = surrogate_preds #Careful: has size D and not size T
+            constraint_dict = dict(zip(constraint_ids, surrogate_preds))
 
-            df_T, df_T_mapped = df_map(T, tokenizer, False)  # Hier surrogate zu False geändert
+            df_T, df_T_mapped = df_map(T, tokenizer, False)
            
             delta1, eval_h1 = eval_h(
                 base_model=base_model,
@@ -101,15 +103,17 @@ class AuditRunner:
 
             disagreement_mask = ((eval_h1 - constraint_preds).abs() > self.config.epsilon) | (
                 (eval_h2 - constraint_preds).abs() > self.config.epsilon
-            )
+            ) #Use full dataset D to compare h1/h2(D) with h^(D)
 
-            disagreement_ids = self.D[disagreement_mask].index
-            weights.loc[disagreement_ids] *= 2
+            disagreement_ids = self.D[np.array(disagreement_mask)].index 
+            while sum(weights.loc[disagreement_ids]) > 1: #Hier wurde nur einmal verdoppelt und nicht, bis die Abbruchbedingung erreicht ist
+                weights.loc[disagreement_ids] *= 2 
 
             newly_covered = weights[weights >= thresholds]
             new_points = self.D.loc[newly_covered.index].copy()
 
             print(f"Added {len(new_points)} samples to T")
+            print(f"ΔAUC(h1-h2) = {abs(delta1 - delta2):.4f}, epsilon = {self.config.epsilon}")
 
             T = new_points.copy()
 
@@ -170,6 +174,7 @@ class AuditRunner:
                 df_old=S,
                 iteration=iteration,
                 delta_auc_blackbox=self.delta_auc_blackbox,
+                compute_auc_fn=compute_blackbox_auc_difference
             )
 
             wandb.log(
