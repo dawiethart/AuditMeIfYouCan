@@ -3,8 +3,8 @@
 import numpy as np
 import pandas as pd
 from datasets import Dataset
-
-
+import matplotlib.pyplot as plt
+import os
 def df_map(dataset, tokenizer, surrogate):
     df = dataset.copy()
 
@@ -119,3 +119,107 @@ def delta_progress(df_new, df_old, iteration, delta_auc_blackbox, compute_auc_fn
         delta_auc.append(abs(delta - delta_auc_blackbox))
 
     return delta_auc
+
+import numpy as np
+import pandas as pd
+
+def random_ordered_sampling(D: pd.DataFrame, api_fn, seed: int = None):
+    """
+    Return:
+      • rand_D: DataFrame with all rows of D in a random permutation
+      • scores:  np.ndarray of black-box scores in that same permuted order
+    """
+    # shuffle indices without replacement
+    rng = np.random.default_rng(seed)
+    perm = rng.permutation(D.index.values)
+    rand_D = D.loc[perm].reset_index(drop=True)
+    # query black‐box once for each text, in this new order
+    scores = np.array(api_fn(rand_D["text"].tolist()))
+    return rand_D, scores
+
+
+def stratified_ordered_sampling(
+    D: pd.DataFrame,
+    api_fn,
+    group_col: str = "group",
+    group1: str = "white",
+    group2: str = "black",
+):
+    """
+    Return:
+      • strat_D: DataFrame with all rows of D interleaved by group:
+          [g1_0, g2_0, g1_1, g2_1, … , then the leftovers of the larger group]
+      • scores:   np.ndarray of black-box scores in that same interleaved order
+    """
+    # split out each group in original order
+    idx1 = D[D[group_col] == group1].index.to_list()
+    idx2 = D[D[group_col] == group2].index.to_list()
+
+    interleaved = []
+    m = min(len(idx1), len(idx2))
+    # interleave one by one
+    for i in range(m):
+        interleaved.append(idx1[i])
+        interleaved.append(idx2[i])
+    # append any leftovers
+    if len(idx1) > m:
+        interleaved.extend(idx1[m:])
+    if len(idx2) > m:
+        interleaved.extend(idx2[m:])
+
+    strat_D = D.loc[interleaved].reset_index(drop=True)
+    scores = np.array(api_fn(strat_D["text"].tolist()))
+    return strat_D, scores
+
+
+def plot_weight_evolution(weight_history, selected_ids_history, save_dir="audit_plots"):
+    """
+    Plots and saves:
+    1. Weight evolution of tracked sample IDs across iterations.
+    2. Size of T (number of selected samples) per iteration.
+
+    Parameters:
+        weight_history: List of pd.Series (sample weights at each iteration)
+        selected_ids_history: List of pd.Series (selected IDs at each iteration)
+        save_dir: Directory where to save the plots (default: 'audit_plots')
+    """
+    os.makedirs(save_dir, exist_ok=True)
+    iterations = list(range(len(weight_history)))
+
+    # === Plot 1: Weight evolution for tracked example IDs ===
+    all_ids = set().union(*[set(w.index) for w in weight_history])
+    tracked_ids = list(all_ids)[:10]
+
+    selected_indices = list(range(0, len(weight_history), 1))[:6]
+    num_plots = len(selected_indices)
+
+    fig, axes = plt.subplots(1, num_plots, figsize=(4 * num_plots, 4), sharey=True)
+    if num_plots == 1:
+        axes = [axes]
+
+    for ax, i in zip(axes, selected_indices):
+        weights = weight_history[i]
+        ax.hist(weights, bins=50, color='skyblue', edgecolor='black')
+        ax.set_title(f"Iteration {i}")
+        ax.set_xlabel("Weight")
+        ax.set_ylabel("Count")
+        ax.grid(True)
+    plt.tight_layout()
+    path1 = os.path.join(save_dir, "weight_evolution.png")
+    plt.savefig(path1)
+    plt.show()
+
+    # === Plot 2: Number of selected T samples per iteration ===
+    plt.figure(figsize=(8, 4))
+    t_sizes = [len(s) for s in selected_ids_history]
+    plt.plot(iterations, t_sizes, marker="o")
+    plt.xlabel("Iteration")
+    plt.ylabel("Number of T samples added")
+    plt.title("T Size Over Iterations")
+    plt.grid(True)
+    plt.tight_layout()
+    path2 = os.path.join(save_dir, "t_size_over_iterations.png")
+    plt.savefig(path2)
+    plt.show()
+
+    print(f"Plots saved to:\n - {path1}\n - {path2}")

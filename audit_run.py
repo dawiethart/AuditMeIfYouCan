@@ -6,10 +6,10 @@ import torch
 import numpy as np
 
 import wandb
-from evaluation import compute_blackbox_auc_difference
+from evaluation import compute_blackbox_auc_difference, evaluate_inner_loop, evaluate_outer_loop
 from optimization import eval_h
 from utils import (delta_progress, df_map, select_topk_stratified_disagreement,
-                   stratified_sampling)
+                   stratified_sampling, plot_weight_evolution, random_ordered_sampling, stratified_ordered_sampling)
 
 
 class AuditRunner:
@@ -43,30 +43,122 @@ class AuditRunner:
         S = stratified_sampling(size, self.D)
         S["bb_score"] = self.api(S["text"].tolist())
         return S
+    def test(self, surrogate_preds, eval_h1, eval_h2, save_path="disagreement_snapshot.csv"):
+        """
+        Save predictions, binarized labels, and disagreement flags to a CSV.
 
-    def refine_until_converged(self, surrogate, tokenizer, base_model, inputs_D, df_D_mapped, S):
+        Parameters:
+            surrogate_preds (np.ndarray): Scores from the surrogate model.
+            eval_h1 (np.ndarray): Scores from h1 (maximizing ΔAUC).
+            eval_h2 (np.ndarray): Scores from h2 (minimizing ΔAUC).
+            save_path (str): File path to save the CSV.
+        """
+
+        # Convert scores to tensors
+        sur_t = torch.from_numpy(surrogate_preds)
+        h1_t  = torch.as_tensor(eval_h1)
+        h2_t  = torch.as_tensor(eval_h2)
+
+        # Binarize predictions
+        sur_lbls = (sur_t >= 0.5).to(torch.int)
+        h1_lbls  = (h1_t  >= 0.5).to(torch.int)
+        h2_lbls  = (h2_t  >= 0.5).to(torch.int)
+
+        # Convert to numpy for saving
+        disagreement_df = pd.DataFrame({
+            "id": self.D["id"].values,
+            "text": self.D["text"].values,
+            "surrogate_score": sur_t.cpu().numpy(),
+            "h1_score": h1_t.cpu().numpy(),
+            "h2_score": h2_t.cpu().numpy(),
+            "surrogate_label": sur_lbls.cpu().numpy(),
+            "h1_label": h1_lbls.cpu().numpy(),
+            "h2_label": h2_lbls.cpu().numpy(),
+            "disagrees": ((h1_lbls != sur_lbls) | (h2_lbls != sur_lbls)).cpu().numpy()
+        })
+
+        # Save to CSV
+        disagreement_df.to_csv(save_path, index=False)
+        print(f"[INFO] Disagreement snapshot saved to: {save_path}")
+    
+    def refine_until_converged(
+        self,
+        surrogate,          # surrogate model h^ already trained on S
+        tokenizer,
+        base_model,
+        inputs_D,
+        df_D_mapped,
+        S,                  # your current surrogate training set
+    ):
+        # 0) initialize uniform weights over D
         weights = pd.Series(1.0 / len(self.D), index=self.D.index)
-        lambda_param = torch.log(torch.tensor(1e6 * 2 ** 100 / 0.05))  # Example H, M, delta
+        weight_history = []
+        selected_ids_history = []
+
+        # 0.5) compute h^(x) for all x in D once
+        surrogate_preds = self.predict(
+            self.D["text"].tolist(),
+            tokenizer,
+            surrogate,
+            self.config.batch_size
+        )
+        
+        sur_labels = (surrogate_preds >= 0.5).astype(int)   # array of 0s and 1s
+
+        # 2a) sample fresh thresholds for every x in D
+        λ = torch.log(torch.tensor(1e6 * 2 ** 100 / 0.004))
+        λ = λ*0.1
         thresholds = pd.Series(
-            torch.distributions.Exponential(lambda_param).sample([len(self.D)]).numpy(),
+            torch.distributions.Exponential(λ)
+                    .sample([len(self.D)])
+                    .numpy(),
             index=self.D.index,
         )
 
-        surrogate_preds = self.predict(
-                self.D["text"].tolist(), tokenizer, surrogate, self.config.batch_size
-            )
-        self.D["surrogate_score"] = surrogate_preds
+        # 1) start with an empty constraint set T
+        T = pd.DataFrame(columns=self.D.columns)
 
-        T = S.drop(columns = "bb_score") # first random stratified sample
- 
-        for i in range(50):  # Max 50 inner iterations to avoid infinite loops
+        # 2) inner refinement loop
+        for inner_it in range(50):
+          
+            # Take at least one positive and one negative from each group (0,1)
+            safe_T = []
+            for group in [0, 1]:
+                group_df = self.D[self.D["group"] == group]
+                group_df_labels = (self.predict(
+                        group_df["text"].tolist(),
+                        tokenizer,
+                        surrogate,
+                        self.config.batch_size
+                    ) >= 0.5)
+               
+                for label in [0, 1]:
+                    subset = group_df[group_df_labels == label]
+                    
+                    if not subset.empty:
+                        safe_T.append(subset.sample(1, random_state=inner_it))  # or .iloc[[0]]
+            if len(T) >= 4:
+                T = pd.concat([T, pd.concat(safe_T)], ignore_index=True).drop_duplicates()
+            else:
+                
+                T = pd.concat(safe_T) 
+        
 
-            constraint_ids = T["id"] #Use subset T of surrogate_preds as Constraint
-            constraint_preds = surrogate_preds #Careful: has size D and not size T
-            constraint_dict = dict(zip(constraint_ids, surrogate_preds))
+            print(f"T:{len(T)}")
 
+            # 2b) build constraint_dict only on the current T
+            #     enforce h(x)=h^(x) ∀ x ∈ T
+                   # 3) build your constraint_dict over T
+            constraint_dict = {
+                _id: float(sur_labels[idx])      # cast to float if your solver expects floats
+                for idx, _id in zip(T.index, T["id"])
+            }
+            print(f"Number of constraints: {len(constraint_dict)}")
+            print(f"constraints: {constraint_dict}")
+            # 2c) prepare T for eval_h
             df_T, df_T_mapped = df_map(T, tokenizer, False)
-           
+
+            # 2d) fit the two penalized models h₁,h₂ over D
             delta1, eval_h1 = eval_h(
                 base_model=base_model,
                 df_D=self.D,
@@ -97,32 +189,66 @@ class AuditRunner:
                 compute_group_auc_diff_fn=self.compute_auc_diff,
             )
 
-            if abs(delta1 - delta2) <= 2 * self.config.epsilon:
-                print(f"Stopping: ΔAUC(h1-h2) = {abs(delta1 - delta2):.4f} within 2ε tolerance")
+            # 2e) record current weights and log ΔAUC, stats, IDs
+            weight_history.append(weights.copy())
+            print("EVALUTATING INNER LOOP")
+            delta_inner = evaluate_inner_loop(
+                D=self.D,
+                weights_history=weight_history,
+                thresholds=thresholds,
+                delta1=delta1,
+                delta2=delta2,
+                epsilon=self.config.epsilon,
+            )
+            # convergence?
+            print("EVALUATING CONVERGENCE")
+            if delta_inner <= 2 * self.config.epsilon and inner_it > 1:
+                print(f"Converged @ inner it={inner_it}: ΔAUC(h1,h2)={delta_inner:.4f}")
                 break
 
-            disagreement_mask = ((eval_h1 - constraint_preds).abs() > self.config.epsilon) | (
-                (eval_h2 - constraint_preds).abs() > self.config.epsilon
-            ) #Use full dataset D to compare h1/h2(D) with h^(D)
+            # 2f) find disagreements on D vs surrogate_preds
+            omega = 1e-4
+            sur_t = torch.from_numpy(surrogate_preds)      # dtype inferred, probably float
+            h1_t  = torch.as_tensor(eval_h1)
+            h2_t  = torch.as_tensor(eval_h2)
+            
+            # binarize into int tensors
+            sur_lbls = (sur_t >= 0.5).to(torch.int)
+            h1_lbls  = (h1_t  >= 0.5).to(torch.int)
+            h2_lbls  = (h2_t  >= 0.5).to(torch.int)
 
-            disagreement_ids = self.D[np.array(disagreement_mask)].index 
-            while sum(weights.loc[disagreement_ids]) > 1: #Hier wurde nur einmal verdoppelt und nicht, bis die Abbruchbedingung erreicht ist
-                weights.loc[disagreement_ids] *= 2 
+            disagree_mask = (h1_lbls != sur_lbls) | (h2_lbls != sur_lbls)
+            mask_np      = disagree_mask.cpu().numpy()
+            disagree_ids = self.D.index[mask_np]
+            #self.test(surrogate_preds, eval_h1, eval_h2, save_path=f"disagreement_iter_{inner_it}.csv")
+            if len(disagree_ids) == 0:
+                
+                break
+            # 2g) bump those weights until their total ≤1
+            while weights.loc[disagree_ids].sum() <= 1:
+                print(weights.loc[disagree_ids].sum())
+                weights.loc[disagree_ids] = weights.loc[disagree_ids] * 2
+            print(weights.max)
 
-            newly_covered = weights[weights >= thresholds]
-            new_points = self.D.loc[newly_covered.index].copy()
+            # 2h) define new T = { x : weight[x] ≥ threshold[x] }
+            keep_mask = weights >= thresholds
+            selected_ids_history.append(weights[keep_mask].copy())
+            T = self.D.loc[keep_mask].copy()
+            print(f"T has now {len(T)} samples")
 
-            print(f"Added {len(new_points)} samples to T")
-            print(f"ΔAUC(h1-h2) = {abs(delta1 - delta2):.4f}, epsilon = {self.config.epsilon}")
+            
+            selected_ids_history.append(T.copy())
+            #S = self.D.loc[T.index].copy()
 
-            T = new_points.copy()
-
+           
             torch.cuda.empty_cache()
 
         return T
 
     def run(self):
         tokenizer, base_model = self.load_surrogate()
+
+        
 
         self.D, df_D_mapped = df_map(self.D, tokenizer, False)
         inputs_D = {
@@ -141,55 +267,66 @@ class AuditRunner:
         surrogate = surrogate.to("cpu")
         torch.cuda.empty_cache()
 
-        for iteration in range(self.config.iterations):
-            print(f"\n=== Iteration {iteration + 1} ===")
-            start_time = time.time()
+       
+            # Precompute baselines once
+        random_D, _ = random_ordered_sampling(self.D, self.api, seed=42)
+        random_D["bb_score"] = self.api(random_D["text"].tolist())
+        strat_D, _ = stratified_ordered_sampling(self.D, self.api,
+                                                group_col="group",
+                                                group1=0, group2=1)
+        strat_D["bb_score"] = self.api(strat_D["text"].tolist())
 
-            T = self.refine_until_converged(surrogate, tokenizer, base_model, inputs_D, df_D_mapped, S)
+        for it in range(self.config.iterations):
+            start = time.time()
+            print(f"\n=== Iteration {it+1} ===")
 
+            # 1) Active query & retrain on T then S
+            T = self.refine_until_converged(surrogate, tokenizer, base_model,
+                                            inputs_D, df_D_mapped, S)
             T["bb_score"] = self.api(T["text"].tolist())
-
-            df_T, df_T_mapped = df_map(T, tokenizer, True)
-            surrogate = self.train_surrogate(
-                base_model, df_T, df_T_mapped, self.config.epochs_sur, self.config.batch_size
-            )
-            surrogate = surrogate.to("cpu")
-
-            S = pd.concat([S, T], ignore_index=True).drop_duplicates(subset="id")
+            S = pd.concat([S, T], ignore_index=True).drop_duplicates("id")
 
             df_S, df_S_mapped = df_map(S, tokenizer, True)
-            surrogate = self.train_surrogate(
-                base_model, df_S, df_S_mapped, self.config.epochs_sur, self.config.batch_size
-            )
-            surrogate = surrogate.to("cpu")
+            surrogate = self.train_surrogate(base_model, df_S, df_S_mapped,
+                                            self.config.epochs_sur,
+                                            self.config.batch_size).to("cpu")
             torch.cuda.empty_cache()
 
-            _, probs = self.compute_auc_diff(surrogate.to(self.device), inputs_D, self.D)
+            # 2) Evaluate surrogate ΔAUC
+            _, probs = self.compute_auc_diff(surrogate.to(self.device),
+                                            inputs_D, self.D)
             delta_final = compute_blackbox_auc_difference(
-                labels=self.D["true_label"].astype(int), groups=self.D["group"], scores=probs
+                self.D["true_label"].astype(int),
+                self.D["group"],
+                probs
             )
 
-            delta_progress_vals = delta_progress(
-                df_new=T,
-                df_old=S,
-                iteration=iteration,
-                delta_auc_blackbox=self.delta_auc_blackbox,
-                compute_auc_fn=compute_blackbox_auc_difference
-            )
+            # 3) Slice baselines to current budget
+            budget = len(S)
+            rand_S = random_D.iloc[:budget]
+            strat_S = strat_D.iloc[:budget]
 
-            wandb.log(
-                {
-                    "iteration": iteration,
-                    "query_budget": len(S),
-                    "delta_auc_estimate": float(delta_final),
-                    "delta_auc_true": float(self.delta_auc_blackbox),
-                    "delta_auc_abs_error": abs(delta_final - self.delta_auc_blackbox),
-                    f"delta_auc_progress_iter_{iteration}": delta_progress_vals,
-                    "duration_min": (time.time() - start_time) / 60,
-                }
+            # 4) Log outer‐loop metrics
+            evals = evaluate_outer_loop(
+                ground_truth_delta=self.delta_auc_blackbox,
+                D=self.D,
+                sample_S=S,      sample_scores=S["bb_score"].values,
+                random_S=rand_S, random_scores=rand_S["bb_score"].values,
+                strat_S=strat_S, stratified_scores=strat_S["bb_score"].values,
+                group1=0, group2=1
             )
+            wandb.log({
+                "iteration": it,
+                "query_budget": budget,
+                "delta_estimate": float(delta_final),
+                "delta_true": float(self.delta_auc_blackbox),
+                "delta_error": abs(delta_final - self.delta_auc_blackbox),
+                **{f"ΔAUC/{k}": v for k, v in evals.items()},
+                "duration_min": (time.time() - start) / 60,
+            })
 
-            print(f"[Iteration {iteration+1}] Final surrogate ΔAUC: {delta_final:.4f}")
-            print(f"[Iteration {iteration+1}] Duration: {(time.time() - start_time) / 60:.2f} min")
+            print(f"[Iter {it+1}] ΔAUC_est: {delta_final:.4f} | "
+                f"ΔAUC_true: {self.delta_auc_blackbox:.4f} | "
+                f"Budget: {budget} | Time: {(time.time()-start)/60:.2f}m")
 
         return delta_final
